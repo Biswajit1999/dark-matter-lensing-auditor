@@ -11,6 +11,7 @@ from astropy.io import fits
 
 from .core import audit_mass_light, make_synthetic_cluster
 from .io import read_fits
+from .hff import HFF_DATASETS, download_hff_dataset, prepare_hff_pair
 from .plotting import make_audit_figure
 
 
@@ -25,6 +26,13 @@ def _parser() -> argparse.ArgumentParser:
     demo = sub.add_parser("demo", help="Generate and analyze a synthetic cluster.")
     demo.add_argument("--output", type=Path, default=Path("lensing-demo"))
     demo.add_argument("--seed", type=int, default=7)
+    fetch = sub.add_parser("hff-fetch", help="Download a curated official Hubble Frontier Fields dataset.")
+    fetch.add_argument("dataset", choices=sorted(HFF_DATASETS), nargs="?", default="abell2744-sharon-v4cor")
+    fetch.add_argument("--output", type=Path, default=Path("data/hff"))
+    fetch.add_argument("--overwrite", action="store_true")
+    prepare = sub.add_parser("hff-prepare", help="Reproject the HFF light image onto the lens-map WCS.")
+    prepare.add_argument("dataset_dir", type=Path, help="directory produced by hff-fetch")
+    prepare.add_argument("--output", type=Path, default=Path("data/hff/prepared"))
     return parser
 
 
@@ -39,6 +47,14 @@ def _write(output: Path, image: np.ndarray, kappa: np.ndarray, result) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.command == "hff-fetch":
+        receipt = download_hff_dataset(args.dataset, args.output, overwrite=args.overwrite)
+        print(receipt)
+        return 0
+    if args.command == "hff-prepare":
+        aligned, footprint = prepare_hff_pair(args.dataset_dir, args.output)
+        print(json.dumps({"aligned_image": str(aligned), "footprint": str(footprint)}, indent=2))
+        return 0
     if args.command == "demo":
         image, kappa = make_synthetic_cluster(seed=args.seed)
     else:

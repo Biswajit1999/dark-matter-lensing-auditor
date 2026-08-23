@@ -9,5 +9,6 @@ dist/
 build/
 *.egg-info/
 results/
+data/hff/
 .streamlit/secrets.toml
 .DS_Store

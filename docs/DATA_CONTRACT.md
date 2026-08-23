@@ -26,4 +26,6 @@
 
 ## Recommended provenance sidecar
 
-Store a JSON or YAML file containing archive URLs, checksums, observation IDs, filters, model team/version, source redshift, cosmology, preprocessing commands, and citations. A future release will formalize this manifest.
+`lensaudit hff-fetch` writes `provenance.json` using schema `lensaudit.hff-receipt/1`. It records archive URLs, expected and actual byte counts, SHA-256 checksums, filter/product roles, lens team and version, model method, cluster redshift, archive/readme routes, retrieval time, and release warnings. Source-redshift normalization remains `null` when it has not been established from the map-maker documentation; the software does not guess it.
+
+`lensaudit hff-prepare` writes a reprojected light image and a footprint map on the unchanged κ WCS. Preserve these beside the receipt and record the package version in downstream analyses.

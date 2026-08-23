@@ -12,6 +12,8 @@ Build a downstream, uncertainty-first auditor for lensing mass products, not a r
 4. Priewe et al. find model-to-model differences often exceed quoted statistical errors: https://arxiv.org/abs/1605.07621
 5. Raney et al. report constrained circular mass profiles but substantial magnification scatter and underestimated systematics: https://arxiv.org/abs/2004.05952
 6. Johnson et al. publish HFF products and compare mass to light while documenting modeling caveats: https://arxiv.org/abs/1405.0222
+7. STScI's Abell 2744 release page identifies the official HST F814W mosaics: https://archive.stsci.edu/prepds/frontier/abell2744.html
+8. STScI records that Sharon v4 products were corrected on 2018-08-24 and that `v4orig` has incorrect scaling: https://archive.stsci.edu/prepds/frontier/lensmodels/
 
 ## Claim ledger
 
@@ -21,7 +23,10 @@ Build a downstream, uncertainty-first auditor for lensing mass products, not a r
 | cross-model systematics matter | Priewe; Raney; Meneghetti | high | prefer ensembles and show warnings |
 | public FITS products make reproducible audits possible | STScI HFF archive | high | FITS/WCS input contract |
 | an uncertainty-first beginner workflow is underserved | landscape search vs mature solvers | medium | limit novelty claim to workflow integration |
+| the selected Abell 2744 files are official archive products | STScI HFF product pages and direct archive headers | high | curate exact HTTPS URLs and expected byte counts |
+| Sharon `v4orig` must not be treated as valid | STScI correction notice | high | registry exposes only `v4cor` and tests the safeguard |
+| shape equality alone does not establish sky alignment | FITS/WCS data model | high | real-data preparation maps light onto κ WCS and records a footprint |
 
 ## Gap matrix
 
-Mature solvers already infer lenses. Archive viewers expose products. General FITS tools plot contours. The chosen opening is a reproducible layer that makes invalid states, ensemble disagreement, centroid sensitivity, and non-claims unavoidable.
+Mature solvers already infer lenses. Archive viewers expose products. General FITS tools plot contours. The chosen opening is a reproducible layer that makes invalid states, ensemble disagreement, centroid sensitivity, source receipts, corrected-release selection, and non-claims unavoidable.

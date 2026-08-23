@@ -1,6 +1,6 @@
 # Dark Matter Lensing Auditor
 
-**An uncertainty-aware FITS workflow for comparing gravitational-lensing mass maps with telescope-image light proxies—without confusing a contour overlay with a dark-matter detection.**
+**A provenance-first spatial evidence workbench for comparing gravitational-lensing mass maps with telescope-image light proxies—without confusing a contour overlay with a dark-matter detection.**
 
 [![CI](https://github.com/Biswajit1999/dark-matter-lensing-auditor/actions/workflows/ci.yml/badge.svg)](https://github.com/Biswajit1999/dark-matter-lensing-auditor/actions/workflows/ci.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-174a8b.svg)](LICENSE)
@@ -27,6 +27,24 @@ Full lens solvers such as `lenstronomy`, Lenstool, GRALE, GLAFIC, and SaWLens al
 
 Published HFF comparisons show that statistical uncertainties from a single model can be smaller than the differences between modeling teams. An attractive single contour map can therefore imply more certainty than the model landscape supports.
 
+## Real-data route: Abell 2744
+
+The curated default route is no longer a synthetic cluster. It is an explicit pairing of two official STScI Hubble Frontier Fields products:
+
+- the 60 mas/pixel HST ACS/WFC F814W Abell 2744 mosaic (`131,800,320` bytes); and
+- the corrected Sharon/Johnson `v4cor` Abell 2744 convergence map (`64,008,000` bytes).
+
+The fetcher deliberately selects `v4cor`; STScI marks the older `v4orig` Sharon products as incorrectly scaled. Every transfer is streamed to a partial path, byte-count checked, validated as FITS, SHA-256 hashed, and recorded in `provenance.json`. The preparation step reprojects the light image onto the κ map's celestial WCS without interpolating the mass map.
+
+```bash
+python -m pip install -e ".[app,hff,test]"
+lensaudit hff-fetch abell2744-sharon-v4cor --output data/hff
+lensaudit hff-prepare data/hff/abell2744-sharon-v4cor --output data/hff/prepared
+streamlit run app.py
+```
+
+The archive transfer is approximately 187 MiB. It is never hidden behind a web-app button, and the repository does not redistribute third-party telescope products.
+
 ## Features
 
 - 2D FITS intensity ingestion with readable-WCS reporting.
@@ -39,9 +57,12 @@ Published HFF comparisons show that statistical uncertainties from a single mode
 - Mass and light centroids with ensemble offset intervals.
 - Percentile κ contours over image morphology.
 - Kaiser–Squires E/B reconstruction utility for gridded shear null tests.
-- Streamlit research console, Python API, and reproducible CLI.
+- Curated official HFF dataset contract with exact URLs, expected byte counts, release caveats, and citation routes.
+- Atomic real-data download with SHA-256 provenance receipts.
+- WCS-aware reprojection of light onto the unchanged lens-map grid.
+- Map-centric Streamlit evidence console, Python API, and reproducible CLI.
 - JSON, PNG, and FITS outputs.
-- Synthetic cluster with an injected offset for test-driven demonstrations.
+- Synthetic cluster isolated in a validation lab rather than presented as observational evidence.
 
 ## Quick start
 
@@ -59,7 +80,7 @@ python -m pip install -e ".[app,test]"
 streamlit run app.py
 ```
 
-The default synthetic example runs without external data.
+The landing workflow presents the official HFF data contract. Synthetic data are confined to the validation tab.
 
 ### Run the reproducible CLI demo
 
@@ -148,7 +169,7 @@ Before interpreting an offset or excess:
 
 The [Hubble Frontier Fields lens-model archive](https://archive.stsci.edu/prepds/frontier/lensmodels/) provides public κ and γ maps, magnification products, deflection maps, and—in several releases—model realizations. The [Frontier Fields data archive](https://archive.stsci.edu/prepds/frontier/) provides co-located HST imaging and catalogs.
 
-Always read the map-maker README, validity region, source-redshift normalization, and requested acknowledgements. This repository does not redistribute those products.
+Always read the map-maker README, validity region, source-redshift normalization, and requested acknowledgements. The curated registry is intentionally small: an unreviewed file name is rejected instead of guessed.
 
 ## Evidence base
 
@@ -169,12 +190,10 @@ pytest
 lensaudit demo --output results/smoke-test
 ```
 
-Tests cover deterministic synthetic generation, finite audit maps, single-model warnings, shape-mismatch rejection, FITS upload ingestion, and zero-shear E/B behavior.
+Tests cover deterministic synthetic generation, finite audit maps, single-model warnings, shape-mismatch rejection, FITS upload ingestion, zero-shear E/B behavior, curated-release safeguards, unknown-dataset rejection, and cryptographic download receipts.
 
 ## Roadmap to a research release
 
-- HFF/MAST manifest adapter with checksums and citation metadata.
-- WCS-aware reprojection with a recorded target grid.
 - Cross-team κ normalization and source-redshift harmonization.
 - Stellar-mass rather than raw-light proxy support.
 - Mask-aware Kaiser–Squires and aperture-mass significance maps.
@@ -186,6 +205,7 @@ Tests cover deterministic synthetic generation, finite audit maps, single-model 
 
 ```text
 app.py                    Streamlit evidence console
+src/lensaudit/hff.py      curated STScI registry, fetch receipts, WCS preparation
 src/lensaudit/core.py     mass–light audit and Kaiser–Squires utility
 src/lensaudit/io.py       FITS ingestion
 src/lensaudit/plotting.py publication-style evidence figure
