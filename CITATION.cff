@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "Please cite this software, the lensing method, and every external lens-model/data product used."
+title: "Dark Matter Lensing Auditor"
+type: software
+authors:
+  - family-names: Jana
+    given-names: Biswajit
+version: 0.1.0
+date-released: 2026-08-23
+license: MIT
+repository-code: "https://github.com/Biswajit1999/dark-matter-lensing-auditor"
+keywords:
+  - dark matter
+  - gravitational lensing
+  - Hubble Space Telescope
+  - FITS
+  - mass map
