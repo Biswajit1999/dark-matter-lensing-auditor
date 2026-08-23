@@ -6,6 +6,8 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-174a8b.svg)](LICENSE)
 [![Astropy](https://img.shields.io/badge/FITS-Astropy-b85d00.svg)](https://www.astropy.org/)
 
+![Four-panel preview showing a luminous-matter proxy, lensing mass contours, a mass-light residual, and an ensemble-aware discrepancy map](docs/assets/lensing-audit-preview.png)
+
 ## The idea, made scientifically defensible
 
 An optical image contains photons from luminous matter. Dark matter does not appear as a dim patch waiting for an image contour. Its projected gravitational influence can be reconstructed from strong- or weak-lensing constraints, producing convergence (`κ`), shear (`γ`), deflection, or magnification products.
