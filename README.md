@@ -3,10 +3,45 @@
 **A provenance-first spatial evidence workbench for comparing gravitational-lensing mass maps with telescope-image light proxies—without confusing a contour overlay with a dark-matter detection.**
 
 [![CI](https://github.com/Biswajit1999/dark-matter-lensing-auditor/actions/workflows/ci.yml/badge.svg)](https://github.com/Biswajit1999/dark-matter-lensing-auditor/actions/workflows/ci.yml)
+[![Observatory](https://img.shields.io/badge/live-LensAudit_Observatory-a7edca.svg?labelColor=07100f)](https://biswajit1999.github.io/dark-matter-lensing-auditor/)
 [![MIT License](https://img.shields.io/badge/license-MIT-174a8b.svg)](LICENSE)
 [![Astropy](https://img.shields.io/badge/FITS-Astropy-b85d00.svg)](https://www.astropy.org/)
 
-![Four-panel preview showing a luminous-matter proxy, lensing mass contours, a mass-light residual, and an ensemble-aware discrepancy map](docs/assets/lensing-audit-preview.png)
+[**Open the live Observatory →**](https://biswajit1999.github.io/dark-matter-lensing-auditor/)
+
+![LensAudit Observatory showing injection controls, mass contours over luminous morphology, recovery diagnostics, and uncertainty-aware evidence exports](docs/assets/observatory-desktop.png)
+
+## Not a template: a two-regime research instrument
+
+The repository now contains two complementary interfaces over one scientific contract:
+
+| Instrument | What it does | Epistemic status |
+|---|---|---|
+| **Observatory** (`web/`) | Runs deterministic injection–recovery experiments, compares two reconstruction-prior families, probes layered maps, and exports evidence in the browser | Synthetic truth is known and recovery bias is measurable |
+| **FITS workbench** (`app.py` + `src/lensaudit`) | Fetches, hashes, aligns, and audits full-resolution HFF or user-supplied products | Observational truth is unknown; results are model audits |
+
+The visual distinction is intentional. The simulator may reveal injected truth; the Abell 2744 view never does. This prevents a polished contour overlay from silently becoming a claim that dark matter was “seen.”
+
+### Run the browser laboratory
+
+```bash
+cd web
+npm ci
+npm test
+npm run dev
+```
+
+The browser app includes:
+
+- seeded two-halo experiments with adjustable offset, ellipticity, subhalo ratio, model-position noise, and ensemble size;
+- separate stylized parametric-prior and adaptive-grid-prior reconstruction families;
+- injected versus recovered separation, 16th–84th percentile interval, recovery bias, and between-family centroid shift;
+- mass, mass–light residual, and reconstruction-scatter evidence planes with an exact keyboard-accessible numerical probe;
+- a bundled 128 × 128 Abell 2744 web derivative generated from the verified 4000 × 4000 source products;
+- JSON/CSV evidence export, a visible numerical table, deep-linked observation mode, reduced-motion support, and responsive layouts; and
+- automated dependency audit, unit tests, production build, and GitHub Pages deployment.
+
+Read the [experiment contract](docs/WEB_LAB.md) and [system architecture](docs/ARCHITECTURE.md) before extending the browser calculations.
 
 ## The idea, made scientifically defensible
 
@@ -63,6 +98,9 @@ The archive transfer is approximately 187 MiB. It is never hidden behind a web-a
 - Map-centric Streamlit evidence console, Python API, and reproducible CLI.
 - JSON, PNG, and FITS outputs.
 - Synthetic cluster isolated in a validation lab rather than presented as observational evidence.
+- Scientist-facing React/TypeScript Observatory with deterministic injection–recovery and an explicit observational boundary.
+- Traceable compact HFF derivative carrying source filenames and SHA-256 hashes.
+- Separate Python and web CI plus reproducible GitHub Pages deployment.
 
 ## Quick start
 

@@ -6,6 +6,8 @@ htmlcov/
 .venv/
 venv/
 dist/
+node_modules/
+*.tsbuildinfo
 build/
 *.egg-info/
 results/
