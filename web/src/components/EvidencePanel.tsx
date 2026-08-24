@@ -1,10 +1,12 @@
 import { ArrowSquareOut, DownloadSimple, SealWarning } from "@phosphor-icons/react";
 import type { EvidenceProduct, HffWebDataset, SimulationParameters } from "../science/types";
+import type { UploadReceipt } from "../science/fits";
 
 type Props = {
   product: EvidenceProduct;
   params?: SimulationParameters;
   dataset?: HffWebDataset;
+  uploadReceipt?: UploadReceipt;
 };
 
 function fmt(value: number | null, digits = 2) { return value === null ? "—" : value.toFixed(digits); }
@@ -19,7 +21,7 @@ function download(name: string, body: string, mime: string) {
   URL.revokeObjectURL(url);
 }
 
-export function EvidencePanel({ product, params, dataset }: Props) {
+export function EvidencePanel({ product, params, dataset, uploadReceipt }: Props) {
   const { metrics } = product;
   const report = {
     schema: "lensaudit.browser-report/1",
@@ -27,6 +29,7 @@ export function EvidencePanel({ product, params, dataset }: Props) {
     mode: product.mode,
     simulationParameters: params ?? null,
     observationalDataset: dataset?.id ?? null,
+    uploadReceipt: uploadReceipt ?? null,
     metrics,
     centroids: { light: product.lightCentroid, mass: product.massCentroid, families: product.familyCentroids ?? null },
     warnings: product.warnings,
@@ -65,8 +68,9 @@ export function EvidencePanel({ product, params, dataset }: Props) {
         </table>
       </details>
       <div className="warning-stack">
-        {product.warnings.slice(0, 3).map((warning) => <p key={warning}><SealWarning aria-hidden="true" />{warning}</p>)}
+        {product.warnings.slice(0, 5).map((warning) => <p key={warning}><SealWarning aria-hidden="true" />{warning}</p>)}
       </div>
+      {uploadReceipt && <details className="evidence-table upload-receipt"><summary>Local provenance receipt</summary><dl><div><dt>WCS status</dt><dd>{uploadReceipt.wcs.status}</dd></div><div><dt>Light SHA-256</dt><dd><code>{uploadReceipt.light.sha256}</code></dd></div><div><dt>κ SHA-256</dt><dd><code>{uploadReceipt.kappa.sha256}</code></dd></div><div><dt>κ planes</dt><dd>{uploadReceipt.selectedKappaPlanes.length}</dd></div></dl></details>}
       <div className="export-actions">
         <button type="button" onClick={() => download("lensaudit-report.json", JSON.stringify(report, null, 2), "application/json")}><DownloadSimple aria-hidden="true" />JSON report</button>
         <button type="button" onClick={() => download("lensaudit-metrics.csv", csv, "text/csv")}><DownloadSimple aria-hidden="true" />Metrics CSV</button>

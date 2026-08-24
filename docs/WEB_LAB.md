@@ -33,6 +33,12 @@ The Abell 2744 browser product contains:
 
 The site bundles an area-aggregated 128 × 128 derivative, not the original FITS products. Every JSON derivative records both source filenames and their SHA-256 hashes. It retains dimensionless convergence cell means but compresses the light proxy for display. Full-resolution measurement belongs in the Python workflow.
 
+### Local FITS upload
+
+The third interface accepts a 2D luminous-image FITS and an independently reconstructed 2D κ map or 3D κ ensemble. It inspects compatible image HDUs, enforces identical source dimensions, compares available celestial-WCS terms, computes complete-file SHA-256 receipts, and runs the same morphology audit locally. Image-only analysis cannot enable the evidence plane.
+
+See the [local upload contract](UPLOAD_FITS.md) for supported `BITPIX` values, WCS tolerances, bounded browser aggregation, privacy, and failure behavior.
+
 ## Browser equations
 
 Each light and mass morphology is robustly mapped between its first and 99th percentiles. With normalized light `L`, normalized ensemble mean mass `K`, and normalized ensemble scatter `S`:

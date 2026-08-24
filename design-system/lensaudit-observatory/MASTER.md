@@ -15,11 +15,12 @@ This is the visual source of truth for the scientist-facing web instrument. It r
 
 The most important design rule is not aesthetic:
 
-1. Synthetic injection–recovery and observational audit are separate top-level modes.
+1. Synthetic injection–recovery, curated observation, and local FITS upload are separate top-level modes.
 2. Known truth is coral and may appear only in simulation mode.
 3. Luminous centroid is mint cross; inferred mass centroid is amber circle.
-4. Observational mode always states that truth is unknown and the single model does not measure between-team systematics.
-5. Every graphical metric has a visible numeric or tabular equivalent.
+4. Observational modes always state that truth is unknown; a single model does not measure between-team systematics.
+5. Upload mode requires both light and an independent lensing mass product. Image-only inference never enables the evidence plane.
+6. Every graphical metric has a visible numeric or tabular equivalent.
 
 ## Semantic tokens
 
@@ -79,6 +80,8 @@ Spacing follows 4/8 px rhythm with dense control increments: 4, 8, 12, 16, 24, 3
 - Buttons have visible borders and stable bounds; hover changes surface or border, not layout.
 - Range inputs retain a large interactive track and explicit numeric output.
 - Details/summary is used for receipts and evidence tables so complexity is progressively disclosed.
+- File inputs retain visible labels, inline errors, a focusable error summary, explicit required state, and a recovery route.
+- Upload processing states reserve their space and name the current operation; disabled analysis controls explain their prerequisites in surrounding text.
 - Export actions name the format and produce self-describing files.
 - Active states use `aria-pressed`; icon-only meanings always have visible text or an accessible name.
 
@@ -107,6 +110,7 @@ Spacing follows 4/8 px rhythm with dense control increments: 4, 8, 12, 16, 24, 3
 - calling a model residual a dark-matter detection or a Gaussian sigma;
 - mixing source FITS values and display-normalized values without a label;
 - exposing injected truth in observational mode;
+- treating a JPG, PNG, or luminous FITS image as a lensing mass reconstruction;
 - hiding uncertainty to make a map appear cleaner;
 - unexplained acronyms or icon-only navigation; and
 - animations that suggest confidence, convergence, or physical evolution.

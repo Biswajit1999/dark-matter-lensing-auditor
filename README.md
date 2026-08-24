@@ -19,6 +19,7 @@ The repository now contains two complementary interfaces over one scientific con
 |---|---|---|
 | **Observatory** (`web/`) | Runs deterministic injection–recovery experiments, compares two reconstruction-prior families, probes layered maps, and exports evidence in the browser | Synthetic truth is known and recovery bias is measurable |
 | **FITS workbench** (`app.py` + `src/lensaudit`) | Fetches, hashes, aligns, and audits full-resolution HFF or user-supplied products | Observational truth is unknown; results are model audits |
+| **Local FITS gate** (Observatory upload mode) | Inspects image HDUs, validates source grids and WCS, hashes both files, and audits a 2D κ map or 3D ensemble without network transfer | Requires light + lensing mass; image-only inference is disabled |
 
 The visual distinction is intentional. The simulator may reveal injected truth; the Abell 2744 view never does. This prevents a polished contour overlay from silently becoming a claim that dark matter was “seen.”
 
@@ -38,10 +39,13 @@ The browser app includes:
 - injected versus recovered separation, 16th–84th percentile interval, recovery bias, and between-family centroid shift;
 - mass, mass–light residual, and reconstruction-scatter evidence planes with an exact keyboard-accessible numerical probe;
 - a bundled 128 × 128 Abell 2744 web derivative generated from the verified 4000 × 4000 source products;
-- JSON/CSV evidence export, a visible numerical table, deep-linked observation mode, reduced-motion support, and responsive layouts; and
+- JSON/CSV evidence export, a visible numerical table, deep-linked observation mode, reduced-motion support, and responsive layouts;
+- local 2D/3D FITS upload with HDU selection, strict registration checks, complete-file SHA-256 receipts, and a 512 MiB per-file safety limit;
 - automated dependency audit, unit tests, production build, and GitHub Pages deployment.
 
-Read the [experiment contract](docs/WEB_LAB.md) and [system architecture](docs/ARCHITECTURE.md) before extending the browser calculations.
+Read the [experiment contract](docs/WEB_LAB.md), [local FITS upload contract](docs/UPLOAD_FITS.md), and [system architecture](docs/ARCHITECTURE.md) before extending the browser calculations.
+
+![Local FITS mode auditing the verified 4000 by 4000 Abell 2744 light and convergence pair with WCS status and provenance receipt](docs/assets/observatory-upload.png)
 
 ## The idea, made scientifically defensible
 
@@ -100,6 +104,7 @@ The archive transfer is approximately 187 MiB. It is never hidden behind a web-a
 - Synthetic cluster isolated in a validation lab rather than presented as observational evidence.
 - Scientist-facing React/TypeScript Observatory with deterministic injection–recovery and an explicit observational boundary.
 - Traceable compact HFF derivative carrying source filenames and SHA-256 hashes.
+- Private in-browser FITS pairing with IMAGE-HDU discovery, WCS validity gates, κ-ensemble support, and exportable local provenance.
 - Separate Python and web CI plus reproducible GitHub Pages deployment.
 
 ## Quick start

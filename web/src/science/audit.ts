@@ -93,7 +93,9 @@ export function auditEvidence(options: AuditOptions): EvidenceProduct {
     : 0;
   const warnings = options.mode === "observation"
     ? [
-        "A single public lens model is displayed; between-team systematics are not measured.",
+        options.models.length === 1
+          ? "A single lens model is displayed; between-model systematics are not measured."
+          : `The supplied ${options.models.length}-map ensemble measures only variation represented by those maps.`,
         "The score is a morphology diagnostic, not a Gaussian significance or particle detection.",
       ]
     : [

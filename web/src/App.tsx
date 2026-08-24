@@ -1,23 +1,27 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowSquareOut, Atom, Flask, GithubLogo, Planet, SpinnerGap } from "@phosphor-icons/react";
+import { ArrowSquareOut, Atom, FileArrowUp, Flask, GithubLogo, Planet, SpinnerGap } from "@phosphor-icons/react";
 import { LayerControl, SimulationControls } from "./components/Controls";
 import { EvidencePanel } from "./components/EvidencePanel";
 import { MapCanvas, type Layer } from "./components/MapCanvas";
+import { FitsUploadPanel } from "./components/FitsUploadPanel";
 import { auditHffDataset, loadHffDataset } from "./science/observation";
 import { DEFAULT_PARAMETERS, simulateExperiment } from "./science/simulation";
 import type { HffWebDataset, SimulationParameters } from "./science/types";
+import type { UploadedAudit } from "./science/fits";
 
-type Mode = "simulation" | "observation";
+type Mode = "simulation" | "observation" | "upload";
 
 export default function App() {
-  const initialMode = new URLSearchParams(window.location.search).get("mode") === "observation" ? "observation" : "simulation";
+  const requestedMode = new URLSearchParams(window.location.search).get("mode");
+  const initialMode: Mode = requestedMode === "observation" || requestedMode === "upload" ? requestedMode : "simulation";
   const [mode, setMode] = useState<Mode>(initialMode);
   const [params, setParams] = useState<SimulationParameters>(DEFAULT_PARAMETERS);
   const [layer, setLayer] = useState<Layer>("composite");
   const [showTruth, setShowTruth] = useState(false);
   const [dataset, setDataset] = useState<HffWebDataset>();
   const [loadError, setLoadError] = useState<string>();
+  const [uploadedAudit, setUploadedAudit] = useState<UploadedAudit>();
   const simulation = useMemo(() => simulateExperiment(params), [params]);
   const observation = useMemo(() => dataset ? auditHffDataset(dataset) : null, [dataset]);
 
@@ -25,13 +29,13 @@ export default function App() {
     loadHffDataset().then(setDataset).catch((error: Error) => setLoadError(error.message));
   }, []);
 
-  const product = mode === "simulation" ? simulation : observation;
+  const product = mode === "simulation" ? simulation : mode === "observation" ? observation : uploadedAudit?.product ?? null;
   const truthPoint = mode === "simulation" ? { x: simulation.lightCentroid.x + params.offsetX, y: simulation.lightCentroid.y + params.offsetY } : undefined;
   const changeMode = (next: Mode) => {
     setMode(next);
     setShowTruth(false);
     const url = new URL(window.location.href);
-    if (next === "observation") url.searchParams.set("mode", "observation");
+    if (next === "observation" || next === "upload") url.searchParams.set("mode", next);
     else url.searchParams.delete("mode");
     window.history.replaceState({}, "", url);
   };
@@ -55,14 +59,15 @@ export default function App() {
         <div className="mode-switch" role="group" aria-label="Experiment mode">
           <button className={mode === "simulation" ? "active" : ""} type="button" aria-pressed={mode === "simulation"} onClick={() => changeMode("simulation")}><Flask aria-hidden="true" /><span><strong>Injection–recovery</strong><small>Known synthetic truth</small></span></button>
           <button className={mode === "observation" ? "active" : ""} type="button" aria-pressed={mode === "observation"} onClick={() => changeMode("observation")}><Planet aria-hidden="true" /><span><strong>Abell 2744</strong><small>Public HFF derivative</small></span></button>
+          <button className={mode === "upload" ? "active" : ""} type="button" aria-pressed={mode === "upload"} onClick={() => changeMode("upload")}><FileArrowUp aria-hidden="true" /><span><strong>Upload FITS</strong><small>Local scientific pair</small></span></button>
         </div>
-        <div className={`mode-boundary mode-boundary--${mode}`}><Atom aria-hidden="true" /><span>{mode === "simulation" ? "Truth is known by construction. Test estimator bias here." : "Truth is unknown. Audit one model product; do not claim detection."}</span></div>
+        <div className={`mode-boundary mode-boundary--${mode}`}><Atom aria-hidden="true" /><span>{mode === "simulation" ? "Truth is known by construction. Test estimator bias here." : mode === "observation" ? "Truth is unknown. Audit one model product; do not claim detection." : "Two products required. Image-only inference is disabled; files remain local."}</span></div>
       </div>
 
       <main id="main-workbench" className={`workbench workbench--${mode}`}>
         {mode === "simulation" ? (
           <SimulationControls params={params} setParams={setParams} layer={layer} setLayer={setLayer} />
-        ) : (
+        ) : mode === "observation" ? (
           <aside className="control-panel observation-panel" aria-labelledby="dataset-heading">
             <div className="panel-heading"><Planet aria-hidden="true" /><div><span className="overline">OBSERVATIONAL PRODUCT</span><h2 id="dataset-heading">Abell 2744</h2></div></div>
             {dataset ? <>
@@ -78,16 +83,16 @@ export default function App() {
             </> : loadError ? <div className="load-error" role="alert"><strong>Dataset unavailable</strong><span>{loadError}</span><button type="button" onClick={() => location.reload()}>Retry</button></div> : <div className="loading-state"><SpinnerGap aria-hidden="true" /><span>Loading verified derivative…</span></div>}
             <LayerControl layer={layer} setLayer={setLayer} />
           </aside>
-        )}
+        ) : <FitsUploadPanel onComplete={setUploadedAudit} onReset={() => setUploadedAudit(undefined)} hasResult={Boolean(uploadedAudit)} layer={layer} setLayer={setLayer} />}
 
         <AnimatePresence mode="wait">
           {product ? (
             <motion.div className="map-column" key={mode} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.24 }}>
               <MapCanvas product={product} layer={layer} showTruth={showTruth} truthPoint={truthPoint} onToggleTruth={() => setShowTruth((value) => !value)} />
             </motion.div>
-          ) : <div className="map-skeleton" aria-label="Loading map" />}
+          ) : mode === "upload" ? <section className="upload-empty-map" aria-labelledby="upload-empty-title"><FileArrowUp aria-hidden="true" /><span className="overline">AWAITING A VALID PAIR</span><h2 id="upload-empty-title">Light is not mass.<br />Provide both products.</h2><p>Select a luminous-image FITS and a co-registered lensing convergence FITS. The evidence plane stays empty until the scientific contract passes.</p></section> : <div className="map-skeleton" aria-label="Loading map" />}
         </AnimatePresence>
-        {product ? <EvidencePanel product={product} params={mode === "simulation" ? params : undefined} dataset={dataset} /> : <aside className="evidence-panel evidence-panel--loading" />}
+        {product ? <EvidencePanel product={product} params={mode === "simulation" ? params : undefined} dataset={mode === "observation" ? dataset : undefined} uploadReceipt={mode === "upload" ? uploadedAudit?.receipt : undefined} /> : mode === "upload" ? <aside className="evidence-panel upload-guide" aria-labelledby="upload-guide-heading"><span className="overline">VALIDITY GATE</span><h2 id="upload-guide-heading">What will pass?</h2><ol><li><strong>Light image</strong><span>2D IMAGE HDU, calibrated pixels preferred.</span></li><li><strong>Mass product</strong><span>2D κ map or 3D ensemble cube.</span></li><li><strong>One grid</strong><span>Identical source dimensions; mismatched WCS is rejected.</span></li><li><strong>Interpretation</strong><span>Pixel-domain morphology audit, never particle detection.</span></li></ol></aside> : <aside className="evidence-panel evidence-panel--loading" />}
       </main>
 
       <section className="method-strip" aria-labelledby="method-title">
