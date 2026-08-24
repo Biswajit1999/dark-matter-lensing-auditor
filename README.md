@@ -9,7 +9,7 @@
 
 [**Open the live Observatory →**](https://biswajit1999.github.io/dark-matter-lensing-auditor/)
 
-![LensAudit Observatory showing injection controls, mass contours over luminous morphology, recovery diagnostics, and uncertainty-aware evidence exports](docs/assets/observatory-desktop.png)
+![LensAudit Hubble Frontier Fields atlas showing the six-target selector, MACS J0717.5+3745 mass contours, luminous morphology, and uncertainty-aware evidence diagnostics](docs/assets/observatory-hff-atlas.png)
 
 ## Not a template: a two-regime research instrument
 
@@ -21,7 +21,7 @@ The repository now contains two complementary interfaces over one scientific con
 | **FITS workbench** (`app.py` + `src/lensaudit`) | Fetches, hashes, aligns, and audits full-resolution HFF or user-supplied products | Observational truth is unknown; results are model audits |
 | **Local FITS gate** (Observatory upload mode) | Inspects image HDUs, validates source grids and WCS, hashes both files, and audits a 2D κ map or 3D ensemble without network transfer | Requires light + lensing mass; image-only inference is disabled |
 
-The visual distinction is intentional. The simulator may reveal injected truth; the Abell 2744 view never does. This prevents a polished contour overlay from silently becoming a claim that dark matter was “seen.”
+The visual distinction is intentional. The simulator may reveal injected truth; the six-field HFF atlas never does. This prevents a polished contour overlay from silently becoming a claim that dark matter was “seen.”
 
 ### Run the browser laboratory
 
@@ -38,7 +38,7 @@ The browser app includes:
 - separate stylized parametric-prior and adaptive-grid-prior reconstruction families;
 - injected versus recovered separation, 16th–84th percentile interval, recovery bias, and between-family centroid shift;
 - mass, mass–light residual, and reconstruction-scatter evidence planes with an exact keyboard-accessible numerical probe;
-- a bundled 128 × 128 Abell 2744 web derivative generated from the verified 4000 × 4000 source products;
+- six target-specific 128 × 128 HFF web derivatives generated from verified 4000 × 4000 Sharon lens products and their corresponding HST mosaics;
 - JSON/CSV evidence export, a visible numerical table, deep-linked observation mode, reduced-motion support, and responsive layouts;
 - local 2D/3D FITS upload with HDU selection, strict registration checks, complete-file SHA-256 receipts, and a 512 MiB per-file safety limit;
 - automated dependency audit, unit tests, production build, and GitHub Pages deployment.
@@ -66,14 +66,20 @@ Full lens solvers such as `lenstronomy`, Lenstool, GRALE, GLAFIC, and SaWLens al
 
 Published HFF comparisons show that statistical uncertainties from a single model can be smaller than the differences between modeling teams. An attractive single contour map can therefore imply more certainty than the model landscape supports.
 
-## Real-data route: Abell 2744
+## Real-data atlas: all six Hubble Frontier Fields clusters
 
-The curated default route is no longer a synthetic cluster. It is an explicit pairing of two official STScI Hubble Frontier Fields products:
+The curated route is no longer a single synthetic or observational showcase. It contains six independently fetched, hashed, aligned, and aggregated official STScI Hubble Frontier Fields pairs:
 
-- the 60 mas/pixel HST ACS/WFC F814W Abell 2744 mosaic (`131,800,320` bytes); and
-- the corrected Sharon/Johnson `v4cor` Abell 2744 convergence map (`64,008,000` bytes).
+| Target | Cluster redshift | Sharon release | HST light product |
+|---|---:|---|---|
+| Abell 2744 | 0.308 | `v4cor` | ACS/WFC F814W, 60 mas/pixel |
+| MACS J0416.1−2403 | 0.396 | `v4cor` | ACS/WFC F814W, 60 mas/pixel |
+| MACS J0717.5+3745 | 0.545 | `v4cor` | ACS/WFC F814W epoch 1, 60 mas/pixel |
+| MACS J1149.5+2223 | 0.544 | `v4cor` | ACS/WFC F814W epoch 2, 60 mas/pixel |
+| Abell S1063 | 0.348 | `v4` | ACS/WFC F814W epoch 1, 60 mas/pixel |
+| Abell 370 | 0.375 | `v4` | ACS/WFC F814W epoch 1, 60 mas/pixel |
 
-The fetcher deliberately selects `v4cor`; STScI marks the older `v4orig` Sharon products as incorrectly scaled. Every transfer is streamed to a partial path, byte-count checked, validated as FITS, SHA-256 hashed, and recorded in `provenance.json`. The preparation step reprojects the light image onto the κ map's celestial WCS without interpolating the mass map.
+For Abell 2744 and the three MACS fields, the fetcher deliberately selects `v4cor`; STScI marks the older `v4orig` Sharon products as incorrectly scaled. Abell S1063 and Abell 370 use `v4`, the latest Sharon release listed for those fields, for which the archive exposes no `v4cor` variant. Every transfer is streamed to a partial path, byte-count checked, validated as FITS, SHA-256 hashed, and recorded in `provenance.json`. Each preparation step reprojects the target's light image onto that target's κ-map celestial WCS without interpolating the mass map.
 
 ```bash
 python -m pip install -e ".[app,hff,test]"
@@ -82,7 +88,7 @@ lensaudit hff-prepare data/hff/abell2744-sharon-v4cor --output data/hff/prepared
 streamlit run app.py
 ```
 
-The archive transfer is approximately 187 MiB. It is never hidden behind a web-app button, and the repository does not redistribute third-party telescope products.
+Replace the dataset identifier with any entry shown by `lensaudit hff-fetch --help`. The full six-field source archive is approximately 960 MiB. These transfers are never hidden behind a web-app button, and the repository does not redistribute third-party telescope FITS products.
 
 ## Features
 

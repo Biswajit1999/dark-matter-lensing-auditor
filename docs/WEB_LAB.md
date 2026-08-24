@@ -25,13 +25,13 @@ For a seeded experiment, the application records:
 
 ### Observation
 
-The Abell 2744 browser product contains:
+The observation atlas contains all six Hubble Frontier Fields clusters. Every target product contains:
 
 - the official HST ACS/WFC F814W mosaic, reprojected onto the lens-model WCS;
-- the official corrected Sharon/Johnson `v4cor` convergence map; and
+- the reviewed Sharon/Johnson convergence map (`v4cor` for Abell 2744 and the three MACS fields; `v4` for Abell S1063 and Abell 370); and
 - the reprojection footprint.
 
-The site bundles an area-aggregated 128 × 128 derivative, not the original FITS products. Every JSON derivative records both source filenames and their SHA-256 hashes. It retains dimensionless convergence cell means but compresses the light proxy for display. Full-resolution measurement belongs in the Python workflow.
+The site bundles six area-aggregated 128 × 128 derivatives, not the original FITS products. Every JSON derivative records both source filenames and their SHA-256 hashes. It retains dimensionless convergence cell means but compresses the light proxy for display. Target selection is stored in the URL, so a field can be cited and revisited directly. Full-resolution measurement belongs in the Python workflow.
 
 ### Local FITS upload
 
@@ -52,7 +52,7 @@ floor = max(0.05, median(S))
 
 `D` is a discrepancy diagnostic. It is not Gaussian significance because the denominator does not contain the complete lens-model, image, source-redshift, line-of-sight, masking, PSF, or calibration covariance.
 
-## Rebuilding the HFF web derivative
+## Rebuilding an HFF web derivative
 
 After running the verified HFF fetch and preparation commands:
 
@@ -66,7 +66,7 @@ python scripts/build_web_dataset.py \
   --size 128
 ```
 
-The generated JSON is small enough for static hosting, while the large third-party FITS assets stay out of Git.
+The generated JSON is small enough for static hosting, while the large third-party FITS assets stay out of Git. Once all six source pairs are prepared, `python scripts/build_all_web_datasets.py` rebuilds every derivative and `catalog.json` in one validated pass.
 
 ## Validity boundary
 

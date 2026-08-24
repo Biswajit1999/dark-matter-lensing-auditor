@@ -11,7 +11,7 @@ import numpy as np
 import streamlit as st
 from astropy.io import fits
 
-from lensaudit import audit_mass_light, get_hff_dataset, make_synthetic_cluster, read_fits, read_fits_bytes
+from lensaudit import HFF_DATASETS, audit_mass_light, get_hff_dataset, make_synthetic_cluster, read_fits, read_fits_bytes
 from lensaudit.plotting import make_audit_figure
 
 
@@ -48,11 +48,16 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-dataset = get_hff_dataset("abell2744-sharon-v4cor")
+dataset_key = st.selectbox(
+    "Official Hubble Frontier Fields target",
+    list(HFF_DATASETS),
+    format_func=lambda key: f"{HFF_DATASETS[key].cluster} · z={HFF_DATASETS[key].cluster_redshift:.3f} · {HFF_DATASETS[key].release}",
+)
+dataset = get_hff_dataset(dataset_key)
 st.markdown(
     f"""
     <div class="dataset-card">
-      <div><b>Curated real-data route 001</b><h2>{dataset.cluster}</h2><p>{dataset.lens_team} · {dataset.lens_method}</p><p>{dataset.release} · cluster z={dataset.cluster_redshift}</p></div>
+      <div><b>Curated HFF target contract</b><h2>{dataset.cluster}</h2><p>{dataset.lens_team} · {dataset.lens_method}</p><p>{dataset.release} · cluster z={dataset.cluster_redshift}</p></div>
       <div class="receipt"><strong>OFFICIAL ARCHIVE CONTRACT</strong><br>{dataset.assets[0].description}<br>{dataset.assets[1].description}<br>Combined transfer: {(sum(a.expected_bytes for a in dataset.assets)/1024**2):.1f} MiB<br><br>{dataset.warning}</div>
     </div>
     """,
@@ -74,15 +79,16 @@ kappa_name = ""
 
 with real_tab:
     st.subheader("Run from source receipts, not screenshots")
-    st.markdown("The app does not hide a 187 MiB network transfer behind a button. Fetch, hash, and align the official products from the CLI; then point this console at the prepared directory.")
+    transfer_mib = sum(asset.expected_bytes for asset in dataset.assets) / 1024**2
+    st.markdown(f"The app does not hide a {transfer_mib:.0f} MiB network transfer behind a button. Fetch, hash, and align the official products from the CLI; then point this console at the prepared directory.")
     st.code(
-        "lensaudit hff-fetch abell2744-sharon-v4cor --output data/hff\n"
-        "lensaudit hff-prepare data/hff/abell2744-sharon-v4cor --output data/hff/prepared",
+        f"lensaudit hff-fetch {dataset.key} --output data/hff\n"
+        f"lensaudit hff-prepare data/hff/{dataset.key} --output data/hff/prepared",
         language="bash",
     )
     prepared_root = Path(st.text_input("Prepared data directory", "data/hff/prepared")).expanduser()
-    aligned_path = prepared_root / "abell2744-f814w-on-sharon-v4cor-grid.fits"
-    kappa_path = prepared_root.parent / "abell2744-sharon-v4cor" / dataset.assets[1].filename
+    aligned_path = prepared_root / dataset.prepared_light_filename
+    kappa_path = prepared_root.parent / dataset.key / dataset.asset("kappa").filename
     st.caption(f"Expected aligned light: {aligned_path} · expected κ: {kappa_path}")
     if st.button("Open verified local products", type="primary"):
         if not aligned_path.exists() or not kappa_path.exists():

@@ -64,3 +64,16 @@ export type HffWebDataset = {
   };
   limitations: string[];
 };
+
+export type HffCatalogEntry = {
+  id: string;
+  title: string;
+  redshift: number;
+  release: string;
+  filename: string;
+};
+
+export type HffCatalog = {
+  schema: "lensaudit.hff-catalog/1";
+  targets: HffCatalogEntry[];
+};

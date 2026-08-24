@@ -2,7 +2,7 @@
 
 This script never downloads data and never substitutes for the full-resolution
 analysis. It area-aggregates an already reprojected F814W image, the unchanged
-Sharon v4cor kappa map, and the reprojection footprint onto a small regular grid.
+reviewed Sharon kappa map, and the reprojection footprint onto a small regular grid.
 """
 
 from __future__ import annotations
@@ -108,9 +108,10 @@ def build_dataset(
             ],
         },
         "limitations": [
+            dataset["warning"],
             "The web derivative is for inspection and teaching, not publication-grade measurement.",
             "Area aggregation removes angular-resolution information; use the full FITS products for inference.",
-            "Only the Sharon/Johnson v4cor reconstruction is bundled, so between-team systematics are absent.",
+            f'Only the Sharon/Johnson {dataset["release"]} reconstruction is bundled for this target, so between-team systematics are absent.',
             "F814W surface brightness is a morphology proxy, not a stellar-mass map.",
         ],
     }
@@ -122,7 +123,7 @@ def build_dataset(
 def parser() -> argparse.ArgumentParser:
     argument_parser = argparse.ArgumentParser(description=__doc__)
     argument_parser.add_argument("--image", type=Path, required=True, help="F814W FITS already reprojected onto the kappa WCS")
-    argument_parser.add_argument("--kappa", type=Path, required=True, help="Sharon v4cor kappa FITS")
+    argument_parser.add_argument("--kappa", type=Path, required=True, help="Reviewed Sharon kappa FITS")
     argument_parser.add_argument("--footprint", type=Path, required=True, help="Reprojection footprint FITS")
     argument_parser.add_argument("--receipt", type=Path, required=True, help="Verified lensaudit provenance.json")
     argument_parser.add_argument("--output", type=Path, required=True, help="Destination JSON")
