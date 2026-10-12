@@ -1,0 +1,134 @@
+{
+  "schema": "lensaudit-weak-lensing-validation/1",
+  "data_class": "synthetic known-truth numerical validation",
+  "supports_observational_mass_claim": false,
+  "kaiser_squires_resolution": [
+    {
+      "grid_size": 32,
+      "pixel_scale_domain_units": 0.03125,
+      "recovered_demeaned_aperture_mass": 0.025025792004486895,
+      "analytic_demeaned_aperture_mass": 0.02495382639337986,
+      "relative_error": 0.002883950940931804,
+      "b_mode_rms": 1.3667506262114917e-17
+    },
+    {
+      "grid_size": 48,
+      "pixel_scale_domain_units": 0.020833333333333332,
+      "recovered_demeaned_aperture_mass": 0.02493682469091194,
+      "analytic_demeaned_aperture_mass": 0.02495382639337986,
+      "relative_error": 0.0006813264707343738,
+      "b_mode_rms": 1.3873810027775916e-17
+    },
+    {
+      "grid_size": 64,
+      "pixel_scale_domain_units": 0.015625,
+      "recovered_demeaned_aperture_mass": 0.02497415544649051,
+      "analytic_demeaned_aperture_mass": 0.02495382639337986,
+      "relative_error": 0.0008146667685419174,
+      "b_mode_rms": 1.3509373232315687e-17
+    },
+    {
+      "grid_size": 96,
+      "pixel_scale_domain_units": 0.010416666666666666,
+      "recovered_demeaned_aperture_mass": 0.024948277756033484,
+      "analytic_demeaned_aperture_mass": 0.02495382639337986,
+      "relative_error": 0.00022235617331403234,
+      "b_mode_rms": 1.3413137598418528e-17
+    },
+    {
+      "grid_size": 128,
+      "pixel_scale_domain_units": 0.0078125,
+      "recovered_demeaned_aperture_mass": 0.024960223602270945,
+      "analytic_demeaned_aperture_mass": 0.02495382639337986,
+      "relative_error": 0.00025636184167666855,
+      "b_mode_rms": 1.5266735716182902e-17
+    },
+    {
+      "grid_size": 192,
+      "pixel_scale_domain_units": 0.005208333333333333,
+      "recovered_demeaned_aperture_mass": 0.024952382281508905,
+      "analytic_demeaned_aperture_mass": 0.02495382639337986,
+      "relative_error": 5.787136001460444e-05,
+      "b_mode_rms": 1.4772744584955108e-17
+    },
+    {
+      "grid_size": 256,
+      "pixel_scale_domain_units": 0.00390625,
+      "recovered_demeaned_aperture_mass": 0.02495738807091044,
+      "analytic_demeaned_aperture_mass": 0.02495382639337986,
+      "relative_error": 0.00014273071690230907,
+      "b_mode_rms": 1.6465785658763808e-17
+    }
+  ],
+  "shape_noise_profile": [
+    {
+      "source_density_arcmin2": 10.0,
+      "sources": 1000,
+      "replicates": 160,
+      "usable_radial_bins": 949,
+      "profile_rmse": 0.047815679452271484,
+      "nominal_95pct_coverage": 0.916754478398314
+    },
+    {
+      "source_density_arcmin2": 20.0,
+      "sources": 2000,
+      "replicates": 160,
+      "usable_radial_bins": 960,
+      "profile_rmse": 0.0338890235989,
+      "nominal_95pct_coverage": 0.9416666666666667
+    },
+    {
+      "source_density_arcmin2": 40.0,
+      "sources": 4000,
+      "replicates": 160,
+      "usable_radial_bins": 960,
+      "profile_rmse": 0.022749478637776592,
+      "nominal_95pct_coverage": 0.9583333333333334
+    },
+    {
+      "source_density_arcmin2": 80.0,
+      "sources": 8000,
+      "replicates": 160,
+      "usable_radial_bins": 960,
+      "profile_rmse": 0.015546444654379701,
+      "nominal_95pct_coverage": 0.9625
+    }
+  ],
+  "mass_sheet_degeneracy": [
+    {
+      "lambda": 0.6,
+      "mean_kappa_before": 0.04307214646539543,
+      "mean_kappa_after": 0.4258432878792373,
+      "maximum_reduced_shear_difference": 3.925231146709438e-17,
+      "rms_reduced_shear_difference": 8.824566367386952e-18
+    },
+    {
+      "lambda": 0.8,
+      "mean_kappa_before": 0.04307214646539543,
+      "mean_kappa_after": 0.2344577171723163,
+      "maximum_reduced_shear_difference": 3.1031676915590914e-17,
+      "rms_reduced_shear_difference": 7.933972243416555e-18
+    },
+    {
+      "lambda": 1.0,
+      "mean_kappa_before": 0.04307214646539543,
+      "mean_kappa_after": 0.04307214646539543,
+      "maximum_reduced_shear_difference": 0.0,
+      "rms_reduced_shear_difference": 0.0
+    },
+    {
+      "lambda": 1.2,
+      "mean_kappa_before": 0.04307214646539543,
+      "mean_kappa_after": -0.14831342424152544,
+      "maximum_reduced_shear_difference": 3.1031676915590914e-17,
+      "rms_reduced_shear_difference": 8.069634154042203e-18
+    },
+    {
+      "lambda": 1.4,
+      "mean_kappa_before": 0.04307214646539543,
+      "mean_kappa_after": -0.3396989949484463,
+      "maximum_reduced_shear_difference": 3.1031676915590914e-17,
+      "rms_reduced_shear_difference": 8.338284525348374e-18
+    }
+  ]
+}

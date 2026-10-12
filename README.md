@@ -241,6 +241,15 @@ lensaudit demo --output results/smoke-test
 
 Tests cover deterministic synthetic generation, finite audit maps, single-model warnings, shape-mismatch rejection, FITS upload ingestion, zero-shear E/B behavior, curated-release safeguards, unknown-dataset rejection, and cryptographic download receipts.
 
+### Weak-lensing validation extension
+
+`python scripts/run_weak_lensing_validation.py` adds three known-truth checks:
+Kaiser–Squires aperture-mass convergence, tangential-profile recovery versus
+shape noise and source density, and a physics-aware regression of the
+mass-sheet degeneracy. See
+[`docs/WEAK_LENSING_VALIDATION.md`](docs/WEAK_LENSING_VALIDATION.md) for
+equations, units, assumptions, and the observational-claim boundary.
+
 ## Roadmap to a research release
 
 - Cross-team κ normalization and source-redshift harmonization.
