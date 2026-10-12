@@ -1,4 +1,5 @@
 """Validation of official MAST HFF strong+weak-lensing map products."""
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -10,11 +11,14 @@ from urllib.request import Request, urlopen
 
 import numpy as np
 from astropy.io import fits
+from skimage.metrics import structural_similarity
 
 from lensaudit.core import kaiser_squires
 
 
-MERTEN_BASE_URL = "https://archive.stsci.edu/pub/hlsp/frontier/abell2744/models/merten/v1"
+MERTEN_BASE_URL = (
+    "https://archive.stsci.edu/pub/hlsp/frontier/abell2744/models/merten/v1"
+)
 MERTEN_FILES = {
     role: f"hlsp_frontier_model_abell2744_merten_v1_{suffix}.fits"
     for role, suffix in {
@@ -52,9 +56,13 @@ def fetch_merten_maps(output: str | Path) -> Path:
         url = f"{MERTEN_BASE_URL}/{filename}"
         if not target.exists():
             partial = target.with_suffix(".fits.part")
-            request = Request(url, headers={"User-Agent": "lensaudit/0.5 observational-validation"})
+            request = Request(
+                url, headers={"User-Agent": "lensaudit/0.5 observational-validation"}
+            )
             try:
-                with urlopen(request, timeout=60) as response, partial.open("wb") as stream:
+                with urlopen(request, timeout=60) as response, partial.open(
+                    "wb"
+                ) as stream:
                     while chunk := response.read(1024 * 1024):
                         stream.write(chunk)
                 if partial.stat().st_size != EXPECTED_BYTES:
@@ -100,14 +108,19 @@ def _load_maps(root: Path) -> tuple[dict[str, np.ndarray], dict[str, fits.Header
     return maps, headers
 
 
-def _best_affine(reference: np.ndarray, estimate: np.ndarray) -> tuple[float, float, float, float]:
+def _best_affine(
+    reference: np.ndarray, estimate: np.ndarray
+) -> tuple[float, float, float, float, float]:
     design = np.column_stack([estimate.ravel(), np.ones(estimate.size)])
     slope, intercept = np.linalg.lstsq(design, reference.ravel(), rcond=None)[0]
     fitted = slope * estimate + intercept
     residual = reference - fitted
     correlation = float(np.corrcoef(reference.ravel(), estimate.ravel())[0, 1])
     normalized_rmse = float(np.sqrt(np.mean(residual**2)) / np.std(reference))
-    return float(slope), float(intercept), correlation, normalized_rmse
+    ssim = float(
+        structural_similarity(reference, fitted, data_range=float(np.ptp(reference)))
+    )
+    return float(slope), float(intercept), correlation, normalized_rmse, ssim
 
 
 @dataclass(frozen=True)
@@ -124,7 +137,9 @@ class ProductValidation:
 
     def to_dict(self) -> dict:
         result = asdict(self)
-        result["data_kind"] = "official observationally constrained strong+weak-lensing model products"
+        result["data_kind"] = (
+            "official observationally constrained strong+weak-lensing model products"
+        )
         result["claim_boundary"] = (
             "This tests internal consistency of published Merten SaWLens maps; it neither "
             "reprocesses the source-galaxy shear catalogues nor constitutes a new mass measurement."
@@ -139,9 +154,21 @@ def validate_merten_products(root: str | Path) -> ProductValidation:
     if len(shapes) != 1 or len(next(iter(shapes))) != 2:
         raise ValueError(f"map shapes disagree: {sorted(shapes)}")
     shape = next(iter(shapes))
-    wcs_keys = ("CTYPE1", "CTYPE2", "CRPIX1", "CRPIX2", "CRVAL1", "CRVAL2", "CDELT1", "CDELT2")
+    wcs_keys = (
+        "CTYPE1",
+        "CTYPE2",
+        "CRPIX1",
+        "CRPIX2",
+        "CRVAL1",
+        "CRVAL2",
+        "CDELT1",
+        "CDELT2",
+    )
     reference_wcs = tuple(headers["kappa"].get(key) for key in wcs_keys)
-    if any(tuple(header.get(key) for key in wcs_keys) != reference_wcs for header in headers.values()):
+    if any(
+        tuple(header.get(key) for key in wcs_keys) != reference_wcs
+        for header in headers.values()
+    ):
         raise ValueError("published products do not share one pixel/WCS grid")
 
     gamma_from_components = np.hypot(maps["gamma1"], maps["gamma2"])
@@ -156,15 +183,20 @@ def validate_merten_products(root: str | Path) -> ProductValidation:
         & (published_magnification > 0)
         & (published_magnification < 100)
     )
-    relative_magnification_error = np.abs(
-        predicted_magnification[stable] - published_magnification[stable]
-    ) / published_magnification[stable]
+    relative_magnification_error = (
+        np.abs(predicted_magnification[stable] - published_magnification[stable])
+        / published_magnification[stable]
+    )
 
     recovered, b_mode = kaiser_squires(maps["gamma1"], maps["gamma2"])
     sweep: list[dict[str, float | int]] = []
     for margin in (value for value in (0, 8, 16, 24, 32) if 2 * value < min(shape)):
-        selection = np.s_[margin : shape[0] - margin, margin : shape[1] - margin] if margin else np.s_[:, :]
-        slope, intercept, correlation, normalized_rmse = _best_affine(
+        selection = (
+            np.s_[margin : shape[0] - margin, margin : shape[1] - margin]
+            if margin
+            else np.s_[:, :]
+        )
+        slope, intercept, correlation, normalized_rmse, ssim = _best_affine(
             maps["kappa"][selection], recovered[selection]
         )
         sweep.append(
@@ -175,18 +207,22 @@ def validate_merten_products(root: str | Path) -> ProductValidation:
                 "mass_sheet_intercept": intercept,
                 "pearson_correlation": correlation,
                 "normalized_rmse": normalized_rmse,
+                "structural_similarity": ssim,
             }
         )
 
     return ProductValidation(
         gamma_identity_max_abs=float(np.max(np.abs(gamma_residual))),
         gamma_identity_rms=float(np.sqrt(np.mean(gamma_residual**2))),
-        magnification_median_relative_error=float(np.median(relative_magnification_error)),
-        magnification_p95_relative_error=float(np.percentile(relative_magnification_error, 95)),
+        magnification_median_relative_error=float(
+            np.median(relative_magnification_error)
+        ),
+        magnification_p95_relative_error=float(
+            np.percentile(relative_magnification_error, 95)
+        ),
         ks_boundary_sweep=tuple(sweep),
         b_mode_rms=float(np.sqrt(np.mean(b_mode**2))),
         shape=(int(shape[0]), int(shape[1])),
         lens_redshift=float(headers["kappa"].get("Z_L", np.nan)),
         source_redshift=float(headers["kappa"].get("Z_S", np.nan)),
     )
-

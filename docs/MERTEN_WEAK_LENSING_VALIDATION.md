@@ -27,6 +27,11 @@ Three internal product checks are performed:
    and normalized RMSE. Repeating the comparison after excluding progressively
    larger edge margins exposes boundary sensitivity rather than hiding it.
 
+   Because this is a two-dimensional map comparison, the same sweep also
+   reports `scikit-image` structural similarity (SSIM) after the affine fit.
+   SSIM complements rather than replaces correlation and RMSE. The
+   SciencePlots figure is published as both PNG and vector PDF.
+
 Run:
 
 ```bash

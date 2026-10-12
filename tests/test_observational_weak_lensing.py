@@ -50,10 +50,10 @@ def test_product_validation_closes_identities(tmp_path: Path) -> None:
     assert result.gamma_identity_rms < 1e-8
     assert result.magnification_median_relative_error < 1e-7
     assert result.ks_boundary_sweep[0]["pearson_correlation"] > 0.99
+    assert result.ks_boundary_sweep[0]["structural_similarity"] > 0.99
 
 
 def test_product_validation_rejects_wcs_mismatch(tmp_path: Path) -> None:
     _write_fixture(tmp_path, mismatched=True)
     with pytest.raises(ValueError, match="one pixel/WCS grid"):
         validate_merten_products(tmp_path)
-
