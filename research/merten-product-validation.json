@@ -1,0 +1,105 @@
+{
+  "gamma_identity_max_abs": 5.3039558411960286e-08,
+  "gamma_identity_rms": 2.955699711291735e-09,
+  "magnification_median_relative_error": 0.022157305273112413,
+  "magnification_p95_relative_error": 0.06878943314995176,
+  "ks_boundary_sweep": [
+    {
+      "edge_margin_pixels": 0,
+      "pixels": 32400,
+      "affine_slope": 0.9084543723993995,
+      "mass_sheet_intercept": 0.0732087046233575,
+      "pearson_correlation": 0.8415159387564303,
+      "normalized_rmse": 0.5402322878344867,
+      "structural_similarity": 0.7622075284049544
+    },
+    {
+      "edge_margin_pixels": 8,
+      "pixels": 26896,
+      "affine_slope": 0.9726935439700132,
+      "mass_sheet_intercept": 0.07380409405197598,
+      "pearson_correlation": 0.8856542606254217,
+      "normalized_rmse": 0.4643452709310582,
+      "structural_similarity": 0.8033983087679745
+    },
+    {
+      "edge_margin_pixels": 16,
+      "pixels": 21904,
+      "affine_slope": 1.0063314914669257,
+      "mass_sheet_intercept": 0.07420281654109244,
+      "pearson_correlation": 0.8979126087205834,
+      "normalized_rmse": 0.44017376921006635,
+      "structural_similarity": 0.8197296514497531
+    },
+    {
+      "edge_margin_pixels": 24,
+      "pixels": 17424,
+      "affine_slope": 1.031053592552977,
+      "mass_sheet_intercept": 0.07464645508901936,
+      "pearson_correlation": 0.9010921489162589,
+      "normalized_rmse": 0.43362765036547046,
+      "structural_similarity": 0.8313079250465351
+    },
+    {
+      "edge_margin_pixels": 32,
+      "pixels": 13456,
+      "affine_slope": 1.0569004346242208,
+      "mass_sheet_intercept": 0.07528247318229896,
+      "pearson_correlation": 0.9032201686129396,
+      "normalized_rmse": 0.42917750058782583,
+      "structural_similarity": 0.8310235289364176
+    }
+  ],
+  "b_mode_rms": 0.037520684582409314,
+  "shape": [
+    180,
+    180
+  ],
+  "lens_redshift": 0.308,
+  "source_redshift": 9.0,
+  "data_kind": "official observationally constrained strong+weak-lensing model products",
+  "claim_boundary": "This tests internal consistency of published Merten SaWLens maps; it neither reprocesses the source-galaxy shear catalogues nor constitutes a new mass measurement.",
+  "provenance": {
+    "schema": "lensaudit.merten-receipt/1",
+    "retrieved_at_utc": "2026-10-12T10:26:11.514593+00:00",
+    "archive": "MAST Hubble Frontier Fields",
+    "dataset": "Abell 2744 Merten v1 SaWLens strong+weak-lensing reconstruction",
+    "assets": [
+      {
+        "role": "gamma",
+        "filename": "hlsp_frontier_model_abell2744_merten_v1_gamma.fits",
+        "url": "https://archive.stsci.edu/pub/hlsp/frontier/abell2744/models/merten/v1/hlsp_frontier_model_abell2744_merten_v1_gamma.fits",
+        "bytes": 135360,
+        "sha256": "9a913ea1362f8e7b8799a380c68f8efe88f1a9cd928cb9083462714fd0f313fd"
+      },
+      {
+        "role": "gamma1",
+        "filename": "hlsp_frontier_model_abell2744_merten_v1_gamma1.fits",
+        "url": "https://archive.stsci.edu/pub/hlsp/frontier/abell2744/models/merten/v1/hlsp_frontier_model_abell2744_merten_v1_gamma1.fits",
+        "bytes": 135360,
+        "sha256": "ef57a7c62e14e83d891e6eaf13ac2f0d7332315c7d426d9bab635949a3837fa3"
+      },
+      {
+        "role": "gamma2",
+        "filename": "hlsp_frontier_model_abell2744_merten_v1_gamma2.fits",
+        "url": "https://archive.stsci.edu/pub/hlsp/frontier/abell2744/models/merten/v1/hlsp_frontier_model_abell2744_merten_v1_gamma2.fits",
+        "bytes": 135360,
+        "sha256": "5e3a7f2bd61215bfe3ad49485a806047682ecbf7a66a67bde29a583e67b65771"
+      },
+      {
+        "role": "kappa",
+        "filename": "hlsp_frontier_model_abell2744_merten_v1_kappa.fits",
+        "url": "https://archive.stsci.edu/pub/hlsp/frontier/abell2744/models/merten/v1/hlsp_frontier_model_abell2744_merten_v1_kappa.fits",
+        "bytes": 135360,
+        "sha256": "553468ceb4c7dc104a856db16a5f67d16a269dd0fb309c0cc3bd4dff253fe44a"
+      },
+      {
+        "role": "magnification_z9",
+        "filename": "hlsp_frontier_model_abell2744_merten_v1_z09-magnif.fits",
+        "url": "https://archive.stsci.edu/pub/hlsp/frontier/abell2744/models/merten/v1/hlsp_frontier_model_abell2744_merten_v1_z09-magnif.fits",
+        "bytes": 135360,
+        "sha256": "4fbea737646152519382e378083f84b71dd1d571a71157eb9e5d31a83c0f5eb1"
+      }
+    ]
+  }
+}

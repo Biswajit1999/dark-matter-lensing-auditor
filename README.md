@@ -182,6 +182,14 @@ kappa_e, kappa_b = kaiser_squires(gamma1, gamma2)
 
 The B-mode map is a useful null diagnostic, but a small B mode does not prove the E-mode reconstruction is unbiased.
 
+An observationally constrained product check is available for the official
+Abell 2744 Merten v1 SaWLens strong+weak-lensing maps. Run
+`python scripts/validate_merten_products.py` to fetch the reviewed MAST FITS
+products, record SHA-256 provenance, test shear-component and magnification
+identities, and quantify finite-field Kaiser–Squires boundary sensitivity. See
+[`docs/MERTEN_WEAK_LENSING_VALIDATION.md`](docs/MERTEN_WEAK_LENSING_VALIDATION.md)
+for the measurement and claim boundaries.
+
 ## What the score means
 
 Image intensity and convergence have different physical units. The code therefore robustly normalizes each morphology and fits one scale factor between them. The residual is
