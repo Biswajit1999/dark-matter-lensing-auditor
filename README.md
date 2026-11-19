@@ -11,6 +11,12 @@
 
 ![LensAudit Hubble Frontier Fields atlas showing the six-target selector, MACS J0717.5+3745 mass contours, luminous morphology, and uncertainty-aware evidence diagnostics](docs/assets/observatory-hff-atlas.png)
 
+## Research evidence and downloads
+
+[Open the evidence browser file](evidence.html) for 13 selected files, including [`merten-product-validation.json`](research/merten-product-validation.json). Each file has a download link and SHA-256 digest. Serve this checkout with `python -m http.server` to view the static browser.
+
+Rebuild the inventory and browser with `python scripts/evidence_catalog.py` and `python scripts/render_evidence_page.py`.
+
 ## Not a template: a two-regime research instrument
 
 The repository now contains two complementary interfaces over one scientific contract:
