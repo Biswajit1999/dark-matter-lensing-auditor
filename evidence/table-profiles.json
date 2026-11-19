@@ -1,0 +1,259 @@
+{
+  "schema": 1,
+  "project": "Dark Matter Lensing Auditor",
+  "tables": [
+    {
+      "path": "research/ks_resolution_convergence.csv",
+      "label": "Ks resolution convergence",
+      "role": "Tables and numerical results",
+      "rows": 7,
+      "width_mismatches": 0,
+      "columns": [
+        {
+          "name": "grid_size",
+          "blank": 0,
+          "text": 0,
+          "finite": 7,
+          "nonfinite": 0,
+          "minimum": 32.0,
+          "maximum": 256.0
+        },
+        {
+          "name": "pixel_scale_domain_units",
+          "blank": 0,
+          "text": 0,
+          "finite": 7,
+          "nonfinite": 0,
+          "minimum": 0.00390625,
+          "maximum": 0.03125
+        },
+        {
+          "name": "recovered_demeaned_aperture_mass",
+          "blank": 0,
+          "text": 0,
+          "finite": 7,
+          "nonfinite": 0,
+          "minimum": 0.02493682469091194,
+          "maximum": 0.025025792004486895
+        },
+        {
+          "name": "analytic_demeaned_aperture_mass",
+          "blank": 0,
+          "text": 0,
+          "finite": 7,
+          "nonfinite": 0,
+          "minimum": 0.02495382639337986,
+          "maximum": 0.02495382639337986
+        },
+        {
+          "name": "relative_error",
+          "blank": 0,
+          "text": 0,
+          "finite": 7,
+          "nonfinite": 0,
+          "minimum": 5.787136001460444e-05,
+          "maximum": 0.002883950940931804
+        },
+        {
+          "name": "b_mode_rms",
+          "blank": 0,
+          "text": 0,
+          "finite": 7,
+          "nonfinite": 0,
+          "minimum": 1.3413137598418528e-17,
+          "maximum": 1.6465785658763808e-17
+        }
+      ]
+    },
+    {
+      "path": "research/mass_sheet_degeneracy.csv",
+      "label": "Mass sheet degeneracy",
+      "role": "Tables and numerical results",
+      "rows": 5,
+      "width_mismatches": 0,
+      "columns": [
+        {
+          "name": "lambda",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.6,
+          "maximum": 1.4
+        },
+        {
+          "name": "mean_kappa_before",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.04307214646539543,
+          "maximum": 0.04307214646539543
+        },
+        {
+          "name": "mean_kappa_after",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": -0.3396989949484463,
+          "maximum": 0.4258432878792373
+        },
+        {
+          "name": "maximum_reduced_shear_difference",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.0,
+          "maximum": 3.925231146709438e-17
+        },
+        {
+          "name": "rms_reduced_shear_difference",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.0,
+          "maximum": 8.824566367386952e-18
+        }
+      ]
+    },
+    {
+      "path": "research/merten-ks-boundary-sweep.csv",
+      "label": "Merten ks boundary sweep",
+      "role": "Tables and numerical results",
+      "rows": 5,
+      "width_mismatches": 0,
+      "columns": [
+        {
+          "name": "edge_margin_pixels",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.0,
+          "maximum": 32.0
+        },
+        {
+          "name": "pixels",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 13456.0,
+          "maximum": 32400.0
+        },
+        {
+          "name": "affine_slope",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.9084543723993995,
+          "maximum": 1.0569004346242208
+        },
+        {
+          "name": "mass_sheet_intercept",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.0732087046233575,
+          "maximum": 0.07528247318229896
+        },
+        {
+          "name": "pearson_correlation",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.8415159387564303,
+          "maximum": 0.9032201686129396
+        },
+        {
+          "name": "normalized_rmse",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.42917750058782583,
+          "maximum": 0.5402322878344867
+        },
+        {
+          "name": "structural_similarity",
+          "blank": 0,
+          "text": 0,
+          "finite": 5,
+          "nonfinite": 0,
+          "minimum": 0.7622075284049544,
+          "maximum": 0.8313079250465351
+        }
+      ]
+    },
+    {
+      "path": "research/shape_noise_profile.csv",
+      "label": "Shape noise profile",
+      "role": "Tables and numerical results",
+      "rows": 4,
+      "width_mismatches": 0,
+      "columns": [
+        {
+          "name": "source_density_arcmin2",
+          "blank": 0,
+          "text": 0,
+          "finite": 4,
+          "nonfinite": 0,
+          "minimum": 10.0,
+          "maximum": 80.0
+        },
+        {
+          "name": "sources",
+          "blank": 0,
+          "text": 0,
+          "finite": 4,
+          "nonfinite": 0,
+          "minimum": 1000.0,
+          "maximum": 8000.0
+        },
+        {
+          "name": "replicates",
+          "blank": 0,
+          "text": 0,
+          "finite": 4,
+          "nonfinite": 0,
+          "minimum": 160.0,
+          "maximum": 160.0
+        },
+        {
+          "name": "usable_radial_bins",
+          "blank": 0,
+          "text": 0,
+          "finite": 4,
+          "nonfinite": 0,
+          "minimum": 949.0,
+          "maximum": 960.0
+        },
+        {
+          "name": "profile_rmse",
+          "blank": 0,
+          "text": 0,
+          "finite": 4,
+          "nonfinite": 0,
+          "minimum": 0.015546444654379701,
+          "maximum": 0.047815679452271484
+        },
+        {
+          "name": "nominal_95pct_coverage",
+          "blank": 0,
+          "text": 0,
+          "finite": 4,
+          "nonfinite": 0,
+          "minimum": 0.916754478398314,
+          "maximum": 0.9625
+        }
+      ]
+    }
+  ],
+  "excluded": []
+}
