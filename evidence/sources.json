@@ -1,0 +1,71 @@
+{
+  "project": "Dark Matter Lensing Auditor",
+  "repository": "https://github.com/Biswajit1999/dark-matter-lensing-auditor",
+  "files": [
+    {
+      "label": "Project methods",
+      "path": "docs/METHODS.md",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Catalog",
+      "path": "web/public/data/catalog.json",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Abell2744 sharon v4cor",
+      "path": "web/public/data/abell2744-sharon-v4cor.json",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Abell370 sharon v4",
+      "path": "web/public/data/abell370-sharon-v4.json",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Abells1063 sharon v4",
+      "path": "web/public/data/abells1063-sharon-v4.json",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Macs0416 sharon v4cor",
+      "path": "web/public/data/macs0416-sharon-v4cor.json",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Macs0717 sharon v4cor",
+      "path": "web/public/data/macs0717-sharon-v4cor.json",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Merten product validation",
+      "path": "research/merten-product-validation.json",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Weak lensing validation",
+      "path": "research/weak_lensing_validation.json",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Ks resolution convergence",
+      "path": "research/ks_resolution_convergence.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Mass sheet degeneracy",
+      "path": "research/mass_sheet_degeneracy.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Merten ks boundary sweep",
+      "path": "research/merten-ks-boundary-sweep.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Shape noise profile",
+      "path": "research/shape_noise_profile.csv",
+      "role": "Tables and numerical results"
+    }
+  ]
+}
